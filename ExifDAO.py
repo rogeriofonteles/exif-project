@@ -23,7 +23,7 @@ class ExifDAO:
 		return exif_data
 
 
-	def createJson(self, exif_data, id):
+	def create_json(self, exif_data, id):
 		json_data={'_id': id}		
 		for tag in exif_data.keys():
 			if tag not in ('MakerNote'):

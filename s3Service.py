@@ -13,15 +13,21 @@ class s3Service:
         self.s3_address = s3_address       
 
     
-    def downloadImages(self):            
+    def download_images(self, directory):            
+        status_list = list([])
+        err_list = list([])
         for key in self.s3_bucket.objects.all():
-            status, err = self.downloadSingleImage(key)                                     
-        return True, "All images downloaded with success!"        
+            status, err = self.download_single_image(key, directory)  
+            if not status:
+                status.append(status), err_list.append(err)
+        if not status_list:        
+            status_list.append(True), err_list.append("All images downloaded with success!")
+        return status_list, err_list        
 
 
-    def downloadSingleImage(self, key):
+    def download_single_image(self, key, directory):
         try:
-            self.s3_client.download_file(self.s3_address, key.key, 'photos/'+key.key)
+            self.s3_client.download_file(self.s3_address, key.key, directory+'/'+key.key)
             return True, None
         except botocore.exceptions.ClientError as e:
             error_code = int(e.response['Error']['Code'])

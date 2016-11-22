@@ -10,8 +10,11 @@ if __name__ == '__main__':
 
 	endPoint = ExifEndPoint(s3_bucket)	
 
-	endPoint.s3Service.downloadImages()
-	endPoint.processDirectory('photos', concurrency_mode)
+	#Download and extract exif data
+	endPoint.download_bucket_images('photos')
+	endPoint.process_directory('photos', concurrency_mode)
+
+
 
 
 

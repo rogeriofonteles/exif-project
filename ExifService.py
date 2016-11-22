@@ -10,7 +10,7 @@ class ExifService:
     dao = ExifDAO()    
 
     @staticmethod
-    def extractExif(img_addr):
+    def extract_exif(img_addr):
         try:            
             img_file = PIL.Image.open(img_addr)
             tags = {PIL.ExifTags.TAGS[k]: v for k, v in img_file._getexif().items() if k in PIL.ExifTags.TAGS}
@@ -22,15 +22,18 @@ class ExifService:
 
 
     @staticmethod
-    def extractAndInsertEXIF(directory, img):
-        exif_data, err = ExifService.extractExif(directory+'/'+img)                                   
-        if exif_data is not None: ExifService.dao.create(exif_data, img)
-        return exif_data, err    
+    def extract_and_insert_EXIF(directory, img):
+        exif_data, err = ExifService.extract_exif(directory+'/'+img)
+        if not exif_data: 
+            return exif_data, err             
+        else: 
+            flag, err = ExifService.dao.create(exif_data, img)            
+            return flag, err    
 
 
     @staticmethod
-    def find(id)
+    def find(id):
         return dao.find(id)    
-    
+
     
         
