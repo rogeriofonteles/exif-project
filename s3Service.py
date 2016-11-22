@@ -1,6 +1,7 @@
 import botocore
 import boto3
 import copy
+import os
 
 
 class s3Service:
@@ -14,14 +15,21 @@ class s3Service:
 
     
     def download_images(self, directory):            
-        status_list = list([])
-        err_list = list([])
-        for key in self.s3_bucket.objects.all():
-            status, err = self.download_single_image(key, directory)  
-            if not status:
-                status.append(status), err_list.append(err)
-        if not status_list:        
-            status_list.append(True), err_list.append("All images downloaded with success!")
+        status_list = []
+        err_list = []
+        if not os.path.isdir(directory):
+            status_list.append(False), err_list.append("There is no folder named "+directory)
+        else: 
+            try:
+                for key in self.s3_bucket.objects.all():
+                    status, err = self.download_single_image(key, directory)  
+                    if not status:
+                        status_list.append(status), err_list.append(err)
+                if not status_list:        
+                    status_list.append(True), err_list.append("All images downloaded with success!")
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'NoSuchBucket':
+                    status_list.append(False), err_list.append("There is no bucket with this address !")
         return status_list, err_list        
 
 
@@ -32,4 +40,6 @@ class s3Service:
         except botocore.exceptions.ClientError as e:
             error_code = int(e.response['Error']['Code'])
             if error_code == 403:
-                return False, "Image"+key.key+" not found"
+                return False, "Image "+key.key+" not found"
+            else:
+                return False, "Access Denied."     

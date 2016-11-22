@@ -5,18 +5,19 @@ class ParallelService:
     pool_size = 8   
 
     @classmethod
-    def parallelize(cls, func, arg1, arg2):        
+    def parallelize(cls, func, *arg):
+        print arg        
         pool = Pool(cls.pool_size)                            
-        status_output = pool.map(func, arg1, arg2)
+        status_output = pool.map(func, *arg)
         #Wait for the tasks to finish
         pool.close()
         #Wrap current tasks
         pool.join()
 
         status_list, err_list = zip(*status_output)
-        index = [status_list.index(i) for i in status_list if i == False]
-        if index:            
-            return status_list[index[0]], err_list[index[0]]
+        errors = [zipped[1] for zipped in zip(status_list, err_list) if zipped[0] == False]        
+        if errors:            
+            return None, errors
         else:
             return True, None
         
