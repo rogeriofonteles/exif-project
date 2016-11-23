@@ -40,4 +40,9 @@ class ExifEndPoint:
         for doc in ExifService.find(id):
             pprint(doc)
 
+    #Find EXIF data by param_name=param_value
+    def find_by_param(self,param_name, param_value):        
+        for doc in ExifService.find_by_param(param_name, param_value):
+            pprint(doc)
+
     

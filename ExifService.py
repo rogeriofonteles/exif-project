@@ -42,5 +42,13 @@ class ExifService:
             return ['There is no EXIF with this object id']
         return docs
 
+    #Find by id method
+    @staticmethod
+    def find_by_param(param_name, param_value):
+        docs = ExifService.dao.find_by_param(param_name, param_value)        
+        if docs.count() == 0:            
+            return ['There is no EXIF with '+param_name+'='+param_value]
+        return docs
+
     
         
