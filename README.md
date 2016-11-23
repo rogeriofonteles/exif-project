@@ -6,6 +6,8 @@ This project dependencies are inside requirements.txt
 This project uses:
 
   - Python 2.7
+  - MongoDB 2.6
+  - pymongo 3.3.1
   - boto3 API to manipulate s3 services
   - pathos multiprocessing lib
     - This will make this project to run just on Linux since the multiprocessing module was able to execute just in this SO.
