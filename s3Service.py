@@ -3,7 +3,7 @@ import boto3
 import copy
 import os
 
-
+#Here all exceptions are handled and where all main services concerning s3 manipulation are implementated
 class s3Service:
 
     def __init__(self, s3_address): 
@@ -13,7 +13,7 @@ class s3Service:
         self.s3_client = boto3.client('s3')  
         self.s3_address = s3_address       
 
-    
+    #Download all images and saves in the 'directory' folder
     def download_images(self, directory):            
         status_list = []
         err_list = []
@@ -32,7 +32,7 @@ class s3Service:
                     status_list.append(False), err_list.append("There is no bucket with this address !")
         return status_list, err_list        
 
-
+    #Method that download a single image from the bucket through its key 
     def download_single_image(self, key, directory):
         try:
             self.s3_client.download_file(self.s3_address, key.key, directory+'/'+key.key)

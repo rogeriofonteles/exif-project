@@ -1,5 +1,6 @@
 from pathos.multiprocessing import ProcessingPool as Pool
 
+#A general class that makes a function to use a pool of process
 class ParallelService:
 
     pool_size = 8   

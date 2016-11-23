@@ -8,6 +8,7 @@ if __name__ == '__main__':
 	#choose concurrency_mode between PARALLEL or SERIAL
 	concurrency_mode = 'SERIAL'
 
+	#EndPoint Instanciation
 	endPoint = ExifEndPoint(s3_bucket)	
 
 	#Download and extract exif data

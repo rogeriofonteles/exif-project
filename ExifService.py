@@ -5,10 +5,12 @@ import sys
 import exceptions
 from ExifDAO import ExifDAO
 
+#Here all exceptions are handled and where all main services concerning EXIF extraction are implementated
 class ExifService:
 
     dao = ExifDAO()    
 
+    #EXIF extraction from a single image
     @staticmethod
     def extract_exif(img_addr):
         try:            
@@ -22,6 +24,7 @@ class ExifService:
         except AttributeError as e:
             return None, 'Attribute Error on image '+img_addr
 
+    #EXIF extraction and creation of the document to be inserted on the collection
     @staticmethod
     def extract_and_insert_EXIF(directory, img):
         exif_data, err = ExifService.extract_exif(directory+'/'+img)
@@ -31,7 +34,7 @@ class ExifService:
             exif_data, err = ExifService.dao.create(exif_data, img)            
             return True, err    
 
-
+    #Find by id method
     @staticmethod
     def find(id):
         docs = ExifService.dao.find(id)        

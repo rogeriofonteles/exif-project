@@ -6,12 +6,13 @@ from ExifService import ExifService
 from ParallelService import ParallelService 
 from pprint import pprint
 
+#Class that provides services for other classes and print all excewptions handled by service classes
 class ExifEndPoint:
 
     def __init__(self, s3_address):
         self.s3_serv = s3Service(s3_address)          
 
-
+    #Method that extract the EXIFs from images contained in 'directory'
     def process_directory(self, directory, CONCURRENCY_MODE):
         if CONCURRENCY_MODE not in ['SERIAL', 'PARALLEL']: 
             return False
@@ -29,12 +30,12 @@ class ExifEndPoint:
 
         for err in err_list: print err
 
-
+    #Download all images from the bucket 's3_address'
     def download_bucket_images(self, directory):
         status_list, err_list = self.s3_serv.download_images(directory)
         for err in err_list: print(err) 
        
-
+    #Find EXIF data by image id
     def find(self,id):        
         for doc in ExifService.find(id):
             pprint(doc)
