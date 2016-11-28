@@ -1,18 +1,12 @@
 Pillow==3.4.2
-actionlib==1.11.4
 argparse==1.2.1
 bondpy==1.7.16
 boto3==1.4.1
 botocore==1.4.77
-diagnostic-analysis==1.8.7
-diagnostic-common-diagnostics==1.8.7
-diagnostic-updater==1.8.7
-dill==0.2.6.dev0
 docutils==0.12
 futures==3.0.5
 jmespath==0.9.0
 multiprocess==0.70.4
-pathos==0.2.1.dev0
 pluginlib==1.10.1
 pox==0.2.2
 ppft==1.6.4.6
@@ -20,8 +14,8 @@ pymongo==3.3.1
 python-dateutil==2.6.0
 resource-retriever==1.11.6
 s3transfer==0.1.9
-sensor-msgs==1.12.3
 six==1.10.0
 smach==2.0.0
 smclib==1.7.16
 wsgiref==0.1.2
+-e git+https://github.com/uqfoundation/pathos.git@master#egg=pathos

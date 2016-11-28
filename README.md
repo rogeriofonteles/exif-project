@@ -6,12 +6,22 @@ This project dependencies are inside requirements.txt
 This project uses:
 
   - Python 2.7
-  - MongoDB 2.6
-  - pymongo 3.3.1
+  - MongoDB 3.2
   - boto3 API to manipulate s3 services
   - pathos multiprocessing lib
     - This will make this project to run just on Linux since the multiprocessing module was able to execute just in this SO.
-  - pillow lib to extract EXIF data
+  - pillow lib 3.4.2 to extract EXIF data
+  - pymongo 3.3.1  
+
+Install:
+
+  - Create a virtualenv and source it
+  - Execute: pip install -r requirements.txt
+  - Install mongodb as explained in https://docs.mongodb.com/v3.2/installation/
+
+Tests:
+
+  - python tests.py
   
 The main has the following workflow:
 
