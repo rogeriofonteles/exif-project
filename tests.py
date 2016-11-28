@@ -96,10 +96,10 @@ class TestEXIFExtractionFlow(unittest.TestCase):
         exif_result = endPoint.process_directory(self.test_folder, concurrency_mode)        
 
         self.assertEqual(len(exif_result), 4)       
-        self.assertEqual(exif_result[0], 'There is no photos/0188017b-0d90-4cab-9009-bbb74501c3d5.ede96cc7-5500-4b3a-8828-26aabcaa2f4c.jpg in photos folder')
-        self.assertEqual(exif_result[1], 'Attribute Error on image photos/01891213-d911-4562-9947-8548dac09119.undefined.jpg')
-        self.assertEqual(exif_result[2], 'Attribute Error on image photos/002B40A7-048B-4554-9EF1-8E4CB167375D.3912d78a-ec4e-405b-8280-e1a769567ba0.jpg')
-        self.assertEqual(exif_result[3], 'Attribute Error on image photos/01302d0f-c5a6-4ce4-bea3-f9a0566550ae.d22b891e-8c80-454b-b26b-1ef65f7ed025.jpg')
+        self.assertIn('There is no photos/0188017b-0d90-4cab-9009-bbb74501c3d5.ede96cc7-5500-4b3a-8828-26aabcaa2f4c.jpg in photos folder', exif_result)
+        self.assertIn('Attribute Error on image photos/01891213-d911-4562-9947-8548dac09119.undefined.jpg', exif_result)
+        self.assertIn('Attribute Error on image photos/002B40A7-048B-4554-9EF1-8E4CB167375D.3912d78a-ec4e-405b-8280-e1a769567ba0.jpg', exif_result)
+        self.assertIn('Attribute Error on image photos/01302d0f-c5a6-4ce4-bea3-f9a0566550ae.d22b891e-8c80-454b-b26b-1ef65f7ed025.jpg', exif_result)
 
 
     #Query by id with an inexistent id 
@@ -116,29 +116,22 @@ class TestEXIFExtractionFlow(unittest.TestCase):
 
     #Query exif by object key and param name
     def test_07_find(self):
-        s3_bucket = 'waldo-recruiting'      
-        endPoint = ExifEndPoint(s3_bucket)
-        concurrency_mode = 'PARALLEL'
+        try:
+            s3_bucket = 'waldo-recruiting'      
+            endPoint = ExifEndPoint(s3_bucket)
+            concurrency_mode = 'PARALLEL'
 
-        doc = endPoint.find('0015A5C3-D186-471F-A032-9E952CFF3CC6.8fedf4e8-8695-4d6d-ad1e-b686daa713a1')                             
-        print doc
+            doc = endPoint.find('0015A5C3-D186-471F-A032-9E952CFF3CC6.8fedf4e8-8695-4d6d-ad1e-b686daa713a1')                                     
 
-        self.assertEqual(len(doc), 1) 
-        self.assertEqual(doc[0], [{u'LightSource': u'0', u'YResolution': u'(300, 1)', u'ResolutionUnit': u'2', u'Sharpness': u'0', u'ExposureMode': u'0', u'Flash': u'16', 
-            u'SceneCaptureType': u'0', u'DateTime': u'2016:04:02 10:34:53', u'MeteringMode': u'5', u'XResolution': u'(300, 1)', u'Contrast': u'0', u'Saturation': u'0', 
-            u'ExposureProgram': u'2', u'FocalLengthIn35mmFilm': u'180', u'ColorSpace': u'1', u'ExifImageWidth': u'4608', u'ExposureBiasValue': u'(0, 1)', 
-            u'DateTimeOriginal': u'2016:04:02 10:34:53', u'Orientation': u'1', u'SceneType': u'\x01', u'SubjectDistanceRange': u'0', u'WhiteBalance': u'0', 
-            u'CompressedBitsPerPixel': u'(4, 1)', u'DateTimeDigitized': u'2016:04:02 10:34:53', u'FNumber': u'(53, 10)', u'CustomRendered': u'0', u'FocalLength': u'(161, 5)', u'ImageDescription': u'          ', 
-            u'ComponentsConfiguration': u'\x01\x02\x03\x00', u'ExifOffset': u'222', u'ExifImageHeight': u'3456', u'ISOSpeedRatings': u'100', u'Model': u'COOLPIX P600', u'Software': u'COOLPIX P600   V1.0', 
-            u'ExposureTime': u'(1, 160)', u'FileSource': u'\x03', u'MaxApertureValue': u'(7, 2)', u'FlashPixVersion': u'0100', u'GainControl': u'0', u'DigitalZoomRatio': u'(0, 1)', 
-            u'_id': u'0015A5C3-D186-471F-A032-9E952CFF3CC6.8fedf4e8-8695-4d6d-ad1e-b686daa713a1', u'ExifVersion': u'0230'}])               
+            self.assertEqual(len(doc), 1) 
+            self.assertEqual(doc[0]['_id'], '0015A5C3-D186-471F-A032-9E952CFF3CC6.8fedf4e8-8695-4d6d-ad1e-b686daa713a1')               
 
-        doc2 = endPoint.find_by_param('ExifImageHeight', '4016')
+            doc2 = endPoint.find_by_param('ExifImageHeight', '4016')
 
-        self.assertEqual(len(doc2), 14)
-
-        self.client = MongoClient()
-        self.client.test.drop_collection('exif')
+            self.assertEqual(len(doc2), 14)
+        finally:
+            self.client = MongoClient()
+            self.client.test.drop_collection('exif')
 
     
 
